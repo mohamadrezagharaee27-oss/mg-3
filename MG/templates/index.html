@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MG Messenger</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0A0E1A;
+  --surface:#111827;
+  --card:#1A2235;
+  --border:#1F2D45;
+  --accent:#4F8EF7;
+  --accent2:#7C5CFC;
+  --green:#22D3A0;
+  --text:#E8EEF8;
+  --muted:#6B7A99;
+  --danger:#FF5C7A;
+}
+body{background:var(--bg);color:var(--text);font-family:'Vazirmatn',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;animation:float 8s ease-in-out infinite}
+.orb1{width:400px;height:400px;background:var(--accent);top:-100px;right:-100px;animation-delay:0s}
+.orb2{width:300px;height:300px;background:var(--accent2);bottom:-50px;left:-50px;animation-delay:-3s}
+.orb3{width:200px;height:200px;background:var(--green);top:50%;left:50%;animation-delay:-6s}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
+
+.container{position:relative;z-index:1;width:100%;max-width:420px;padding:20px}
+
+.logo{text-align:center;margin-bottom:40px}
+.logo-icon{width:72px;height:72px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px;box-shadow:0 20px 60px rgba(79,142,247,.3);animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 20px 60px rgba(79,142,247,.3)}50%{box-shadow:0 20px 80px rgba(79,142,247,.5)}}
+.logo h1{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.logo p{color:var(--muted);font-size:13px;margin-top:6px}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;backdrop-filter:blur(20px)}
+
+.tabs{display:flex;background:var(--surface);border-radius:12px;padding:4px;margin-bottom:28px;gap:4px}
+.tab{flex:1;padding:10px;border:none;background:none;color:var(--muted);font-family:'Vazirmatn',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border-radius:9px;transition:.2s}
+.tab.active{background:var(--accent);color:#fff;box-shadow:0 4px 20px rgba(79,142,247,.3)}
+
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:500}
+.form-group input{width:100%;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:'Vazirmatn',sans-serif;font-size:14px;outline:none;transition:.2s}
+.form-group input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,142,247,.1)}
+.form-group input::placeholder{color:var(--muted)}
+
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;color:#fff;font-family:'Vazirmatn',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;margin-top:4px}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(79,142,247,.4)}
+.btn:active{transform:translateY(0)}
+
+.error{background:rgba(255,92,122,.1);border:1px solid rgba(255,92,122,.3);color:var(--danger);padding:12px 16px;border-radius:10px;font-size:13px;margin-top:16px;display:none}
+.error.show{display:block}
+
+.features{display:flex;gap:12px;margin-top:24px}
+.feature{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.feature-icon{font-size:20px;margin-bottom:6px}
+.feature p{font-size:11px;color:var(--muted);line-height:1.5}
+</style>
+</head>
+<body>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<div class="container">
+  <div class="logo">
+    <div class="logo-icon">💬</div>
+    <h1>MG Messenger</h1>
+    <p>پیام‌رسان امن و سریع</p>
+  </div>
+
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('login')">ورود</button>
+      <button class="tab" onclick="showTab('register')">ثبت‌نام</button>
+    </div>
+
+    <div id="loginForm">
+      <div class="form-group">
+        <label>نام کاربری</label>
+        <input type="text" id="loginUser" placeholder="نام کاربری خود را وارد کنید" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>رمز عبور</label>
+        <input type="password" id="loginPass" placeholder="رمز عبور" autocomplete="current-password">
+      </div>
+      <button class="btn" onclick="doLogin()">ورود به حساب</button>
+      <div class="error" id="loginErr"></div>
+    </div>
+
+    <div id="registerForm" style="display:none">
+      <div class="form-group">
+        <label>نام نمایشی</label>
+        <input type="text" id="regName" placeholder="چه نامی برایت نمایش داده شود؟">
+      </div>
+      <div class="form-group">
+        <label>نام کاربری</label>
+        <input type="text" id="regUser" placeholder="حروف انگلیسی و عدد (حداقل ۳ کاراکتر)">
+      </div>
+      <div class="form-group">
+        <label>رمز عبور</label>
+        <input type="password" id="regPass" placeholder="حداقل ۶ کاراکتر">
+      </div>
+      <button class="btn" onclick="doRegister()">ساخت حساب کاربری</button>
+      <div class="error" id="regErr"></div>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="feature"><div class="feature-icon">🔒</div><p>رمزنگاری امن</p></div>
+    <div class="feature"><div class="feature-icon">⚡</div><p>پیام‌رسانی آنی</p></div>
+    <div class="feature"><div class="feature-icon">👥</div><p>گروه‌های گروهی</p></div>
+  </div>
+</div>
+
+<script>
+function showTab(t){
+  document.getElementById('loginForm').style.display=t==='login'?'block':'none';
+  document.getElementById('registerForm').style.display=t==='register'?'block':'none';
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(t==='login'&&i===0)||(t==='register'&&i===1)));
+}
+
+async function doLogin(){
+  const u=document.getElementById('loginUser').value;
+  const p=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginErr');
+  err.classList.remove('show');
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+    const d=await r.json();
+    if(d.error){err.textContent=d.error;err.classList.add('show');}
+    else location.reload();
+  }catch(e){err.textContent='خطا در اتصال';err.classList.add('show');}
+}
+
+async function doRegister(){
+  const n=document.getElementById('regName').value;
+  const u=document.getElementById('regUser').value;
+  const p=document.getElementById('regPass').value;
+  const err=document.getElementById('regErr');
+  err.classList.remove('show');
+  try{
+    const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p,display_name:n})});
+    const d=await r.json();
+    if(d.error){err.textContent=d.error;err.classList.add('show');}
+    else{showTab('login');document.getElementById('loginUser').value=u;}
+  }catch(e){err.textContent='خطا در اتصال';err.classList.add('show');}
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter'){const f=document.getElementById('loginForm').style.display;f!=='none'?doLogin():doRegister();}});
+</script>
+</body>
+</html>
